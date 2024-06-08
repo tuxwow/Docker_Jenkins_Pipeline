@@ -1,4 +1,57 @@
+# Base image
+
 FROM tomcat:8.0
+
+
+
+# Install Git and Maven (using package manager)
+
+RUN apt-get update && \
+
+    apt-get install -y git maven
+
+
+
+# Clone the repository
+
+WORKDIR /usr/local/tomcat/webapps/
+
+RUN git clone https://github.com/tuxwow/addressbook-cicd-project.git
+
+
+
+# Switch to project directory
+
+WORKDIR /usr/local/tomcat/webapps/addressbook-cicd-project
+
+
+
+# Build and test with Maven
+
+RUN mvn compile
+
+RUN mvn test
+
+RUN mvn pmd:pmd
+
+RUN mvn clean package
+
+
+
+# Copy the WAR file (adjust path if needed)
+
 ADD ./target/addressbook.war /usr/local/tomcat/webapps/
+
+
+
+# Expose the port
+
 EXPOSE 8084
+
+
+
+# Start Tomcat
+
 CMD ["catalina.sh", "run"]
+
+
