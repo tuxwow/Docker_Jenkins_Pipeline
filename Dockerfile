@@ -1,14 +1,10 @@
 # Base image
-
 FROM tomcat:8.0
-
-
-
 # Install Git and Maven (using package manager)
 
-RUN apt-get update && \
+#RUN apt-get update && \
 
-    apt-get install -y git maven
+RUN  apt-get install -y git maven
 
 
 
